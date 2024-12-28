@@ -1,5 +1,5 @@
 import { StyleSheet, View } from "react-native";
-import AddJobForm from "../AddJobForm";
+import AddJobForm from "./AddJobForm";
 
 const EditJobScreen = ({ route, navigation }: any) => {
   const { addJob } = route.params;

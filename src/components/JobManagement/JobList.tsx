@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList } from "react-native";
 import JobItem from "./JobItem";
 import { Job } from "../../types";
 
@@ -16,11 +16,5 @@ const JobList = ({ jobs, onDelete }: JobListProps) => {
     />
   );
 };
-
-const styles = StyleSheet.create({
-  list: {
-    marginTop: 10,
-  },
-});
 
 export default JobList;

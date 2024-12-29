@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, StyleSheet, View } from "react-native";
-import JobList from "./JobList";
-import { Job, JobMgmtProps } from "../../types";
+import JobList from "../components/JobManagement/JobList";
+import { Job, JobMgmtProps } from "../types";
 
 const JobManagementScreen = ({ navigation }: JobMgmtProps) => {
   const [jobs, setJobs] = useState<Job[]>([]);

@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import JobManagementScreen from "./src/components/JobManagement/JobManagementScreen";
-import EditJobScreen from "./src/components/JobManagement/EditJobScreen";
+import JobManagementScreen from "./src/screens/JobManagementScreen";
+import EditJobScreen from "./src/screens/EditJobScreen";
 import { RootStackParamList } from "./src/types";
 
 const App = () => {

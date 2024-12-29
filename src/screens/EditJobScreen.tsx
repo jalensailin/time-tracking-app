@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
-import AddJobForm from "./AddJobForm";
-import { EditProps } from "../../types";
+import AddJobForm from "../components/JobManagement/AddJobForm";
+import { EditProps } from "../types";
 
 const EditJobScreen = ({ route, navigation }: EditProps) => {
   const { addJob } = route.params;

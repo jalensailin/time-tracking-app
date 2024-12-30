@@ -3,35 +3,34 @@ import { View, TextInput, Button, StyleSheet } from "react-native";
 import { Job } from "../../types";
 
 interface EditJobFormProps {
-  job: Job;
-  onSave: (updatedJob: Job) => void;
-  onCancel: () => void;
+  job?: Job;
+  onSave: (job: Job) => void;
 }
 
-const EditJobForm = ({ job, onSave, onCancel }: EditJobFormProps) => {
-  const [name, setName] = useState(job.name);
-  const [basePayRate, setBasePayRate] = useState(job.basePayRate.toString());
+const EditJobForm = ({ job }: EditJobFormProps) => {
+  const blankJob: Job = { id: Math.random().toString(), name: "", basePayRate: 0 };
+  const [jobState, setJobState] = useState(job || blankJob);
 
-  const handleSave = () => {
-    if (!name || !basePayRate) {
-      alert("Please fill out all fields");
-      return;
-    }
-    onSave({ ...job, name, basePayRate: parseFloat(basePayRate) });
+  const handleChange = ({ name }: any) => {
+    console.log(this);
+    // if (!jobState.name || !jobState.basePayRate) {
+    //   alert("Please enter job name and base pay rate");
+    //   return;
+    // }
+    setJobState({ ...jobState, name });
   };
 
   return (
     <View>
-      <TextInput style={styles.input} placeholder="Job Name" value={name} onChangeText={setName} />
+      <TextInput style={styles.input} placeholder="Job Name" value={jobState.name} onChangeText={handleChange} />
       <TextInput
         style={styles.input}
-        placeholder="Base Pay Rate"
+        placeholder="Base Pay Rate (Hourly)"
         keyboardType="numeric"
-        value={basePayRate}
-        onChangeText={setBasePayRate}
+        value={jobState.basePayRate.toString()}
+        onChange={handleChange}
       />
-      <Button title="Save" onPress={handleSave} />
-      <Button title="Cancel" onPress={onCancel} />
+      <Button title="Add Job" onPress={handleChange} />
     </View>
   );
 };

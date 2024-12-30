@@ -1,10 +1,11 @@
 import { StyleSheet, View } from "react-native";
-import AddJobForm from "../components/JobManagement/AddJobForm";
-import { EditProps } from "../types";
+import EditJobForm from "../components/JobManagement/EditJobForm";
+import { EditProps, Job } from "../types";
 
 const EditJobScreen = ({ route, navigation }: EditProps) => {
-  const { addJob } = route.params;
-  const handleAddJob = (name: string, basePayRate: number) => {
+  const { mode, job, addJob } = route.params;
+
+  const handleAddJob = ({ name, basePayRate }: Job) => {
     const newJob = {
       id: Math.random().toString(),
       name,
@@ -17,7 +18,7 @@ const EditJobScreen = ({ route, navigation }: EditProps) => {
 
   return (
     <View style={styles.container}>
-      <AddJobForm onAddJob={handleAddJob} />
+      <EditJobForm job={job} onSave={handleAddJob} />
     </View>
   );
 };

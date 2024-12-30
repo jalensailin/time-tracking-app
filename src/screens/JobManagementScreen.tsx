@@ -16,7 +16,7 @@ const JobManagementScreen = ({ navigation }: JobMgmtProps) => {
   return (
     <View style={styles.container}>
       <JobList jobs={jobs} onDelete={deleteJob} />
-      <Button title="+" onPress={() => navigation.navigate("Edit Job", { addJob })} />
+      <Button title="+" onPress={() => navigation.navigate("Edit Job", { mode: "add", addJob })} />
     </View>
   );
 };

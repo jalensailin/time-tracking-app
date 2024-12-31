@@ -8,6 +8,7 @@ const JobManagementScreen = ({ navigation }: JobMgmtProps) => {
 
   const updateJob = (job: Job) => {
     setJobs([...jobs, job]);
+    navigation.goBack();
   };
 
   const deleteJob = (id: string) => {
@@ -20,7 +21,7 @@ const JobManagementScreen = ({ navigation }: JobMgmtProps) => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <JobItem job={item} onDelete={deleteJob} />}
       />
-      <Button title="+" onPress={() => navigation.navigate("Edit Job", { mode: "add", updateJob })} />
+      <Button title="+" onPress={() => navigation.navigate("Edit Job", { updateJob })} />
     </View>
   );
 };

@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Button, StyleSheet, View } from "react-native";
-import JobList from "../components/JobManagement/JobList";
+import { Button, FlatList, StyleSheet, View } from "react-native";
 import { Job, JobMgmtProps } from "../types";
+import JobItem from "../components/JobManagement/JobItem";
 
 const JobManagementScreen = ({ navigation }: JobMgmtProps) => {
   const [jobs, setJobs] = useState<Job[]>([]);
 
-  const addJob = (job: Job) => {
+  const updateJob = (job: Job) => {
     setJobs([...jobs, job]);
   };
 
@@ -15,8 +15,12 @@ const JobManagementScreen = ({ navigation }: JobMgmtProps) => {
   };
   return (
     <View style={styles.container}>
-      <JobList jobs={jobs} onDelete={deleteJob} />
-      <Button title="+" onPress={() => navigation.navigate("Edit Job", { mode: "add", addJob })} />
+      <FlatList
+        data={jobs}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <JobItem job={item} onDelete={deleteJob} />}
+      />
+      <Button title="+" onPress={() => navigation.navigate("Edit Job", { mode: "add", updateJob })} />
     </View>
   );
 };

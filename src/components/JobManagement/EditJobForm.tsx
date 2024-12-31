@@ -1,36 +1,48 @@
-import { useState } from "react";
 import { View, TextInput, Button, StyleSheet } from "react-native";
+import { useForm, Controller } from "react-hook-form";
+
 import { Job } from "../../types";
 
 interface EditJobFormProps {
-  job?: Job;
+  job: Job;
   onSave: (job: Job) => void;
 }
 
-const EditJobForm = ({ job }: EditJobFormProps) => {
-  const blankJob: Job = { id: Math.random().toString(), name: "", basePayRate: 0 };
-  const [jobState, setJobState] = useState(job || blankJob);
-
-  const handleChange = ({ name }: any) => {
-    console.log(this);
-    // if (!jobState.name || !jobState.basePayRate) {
-    //   alert("Please enter job name and base pay rate");
-    //   return;
-    // }
-    setJobState({ ...jobState, name });
-  };
+const EditJobForm = ({ job, onSave }: EditJobFormProps) => {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: job,
+  });
 
   return (
     <View>
-      <TextInput style={styles.input} placeholder="Job Name" value={jobState.name} onChangeText={handleChange} />
-      <TextInput
-        style={styles.input}
-        placeholder="Base Pay Rate (Hourly)"
-        keyboardType="numeric"
-        value={jobState.basePayRate.toString()}
-        onChange={handleChange}
+      <Controller
+        control={control}
+        name="name"
+        render={({ field: { onChange, value } }) => (
+          <TextInput style={styles.input} placeholder="Job Name" value={value} onChangeText={onChange} />
+        )}
       />
-      <Button title="Add Job" onPress={handleChange} />
+
+      <Controller
+        control={control}
+        name="basePayRate"
+        rules={{ required: true, min: 18 }}
+        render={({ field: { onChange, value } }) => (
+          <TextInput
+            style={styles.input}
+            placeholder="Base Pay Rate"
+            keyboardType="numeric"
+            value={value.toString()}
+            onChangeText={(value) => onChange(parseFloat(value) || "")}
+          />
+        )}
+      />
+
+      <Button title="Add Job" onPress={handleSubmit(onSave)} />
     </View>
   );
 };

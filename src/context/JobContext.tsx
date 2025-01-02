@@ -7,6 +7,7 @@ interface JobContextType {
   addJob: (job: Job) => void;
   editJob: (job: Job) => void;
   deleteJob: (id: string) => void;
+  clockInOut: (id: string) => void;
 }
 
 const JobContext = createContext<JobContextType | undefined>(undefined);
@@ -20,7 +21,25 @@ export const JobProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const deleteJob = (id: string) => setJobs(jobs.filter((job) => job.id !== id));
 
-  return <JobContext.Provider value={{ jobs, addJob, editJob, deleteJob }}>{children}</JobContext.Provider>;
+  const clockInOut = (id: string) => {
+    const newJobsList = jobs.map((job) => {
+      if (job.id !== id) return job;
+
+      const now = new Date();
+      if (job.clockedIn) {
+        console.log("Clocking out");
+        const lastClockIn = job.clockIns[job.clockIns.length - 1];
+        return { ...job, clockIns: [...job.clockIns, { start: lastClockIn.start, end: now }], clockedIn: false };
+      } else {
+        console.log(`Clocking in:`, job);
+        return { ...job, clockIns: [...job.clockIns, { start: now }], clockedIn: true };
+      }
+    });
+
+    setJobs(newJobsList);
+  };
+
+  return <JobContext.Provider value={{ jobs, addJob, editJob, deleteJob, clockInOut }}>{children}</JobContext.Provider>;
 };
 
 export const useJobContext = () => {

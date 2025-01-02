@@ -8,7 +8,7 @@ const EditJobScreen = ({ navigation, route }: EditProps) => {
   const { id } = route.params;
 
   const job = jobs.find((job) => job.id === id);
-  const blankJob: Job = { id: Math.random().toString(), name: "", basePayRate: 20 };
+  const blankJob: Job = { id: Math.random().toString(), name: "", basePayRate: 20, clockedIn: false, clockIns: [] };
 
   const {
     control,

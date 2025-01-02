@@ -1,6 +1,7 @@
 import { Button, FlatList, StyleSheet, View } from "react-native";
-import { JobMgmtProps } from "../types";
+
 import JobItem from "../components/JobManagement/JobItem";
+import { JobMgmtProps } from "../types";
 import { useJobContext } from "../context/JobContext";
 
 const JobManagementScreen = ({ navigation }: JobMgmtProps) => {

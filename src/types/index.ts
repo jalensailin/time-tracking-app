@@ -14,4 +14,6 @@ export interface Job {
   name: string;
   client?: string;
   basePayRate: number;
+  clockedIn: boolean;
+  clockIns: { start: Date; end?: Date }[];
 }

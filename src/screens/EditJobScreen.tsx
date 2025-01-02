@@ -1,9 +1,13 @@
 import { Button, StyleSheet, TextInput, View } from "react-native";
 import { EditProps, Job } from "../types";
 import { Controller, useForm } from "react-hook-form";
+import { useJobContext } from "../context/JobContext";
 
-const EditJobScreen = ({ route }: EditProps) => {
-  const { job, onSubmit } = route.params;
+const EditJobScreen = ({ navigation, route }: EditProps) => {
+  const { jobs, addJob, editJob } = useJobContext();
+  const { id } = route.params;
+
+  const job = jobs.find((job) => job.id === id);
   const blankJob: Job = { id: Math.random().toString(), name: "", basePayRate: 20 };
 
   const {
@@ -13,6 +17,15 @@ const EditJobScreen = ({ route }: EditProps) => {
   } = useForm({
     defaultValues: job || blankJob,
   });
+
+  const onSubmit = (data: Job) => {
+    if (job) {
+      editJob(data);
+    } else {
+      addJob(data);
+    }
+    navigation.goBack();
+  };
 
   return (
     <View style={styles.container}>
@@ -27,7 +40,7 @@ const EditJobScreen = ({ route }: EditProps) => {
       <Controller
         control={control}
         name="basePayRate"
-        rules={{ required: true, min: 18 }}
+        rules={{ required: true }}
         render={({ field: { onChange, value } }) => (
           <TextInput
             style={styles.input}

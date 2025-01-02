@@ -52,7 +52,7 @@ const EditJobScreen = ({ navigation, route }: EditProps) => {
         )}
       />
 
-      <Button title="Add Job" onPress={handleSubmit(onSubmit)} />
+      <Button title={id ? `Save Changes` : `Add Job`} onPress={handleSubmit(onSubmit)} />
     </View>
   );
 };

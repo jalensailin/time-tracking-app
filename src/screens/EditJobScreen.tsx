@@ -3,13 +3,13 @@ import EditJobForm from "../components/JobManagement/EditJobForm";
 import { EditProps, Job } from "../types";
 
 const EditJobScreen = ({ route }: EditProps) => {
-  const { job, updateJob } = route.params;
+  const { job, onSubmit } = route.params;
 
   const blankJob: Job = { id: Math.random().toString(), name: "", basePayRate: 20 };
 
   return (
     <View style={styles.container}>
-      <EditJobForm job={job || blankJob} updateJob={updateJob} />
+      <EditJobForm job={job || blankJob} onSubmit={onSubmit} />
     </View>
   );
 };

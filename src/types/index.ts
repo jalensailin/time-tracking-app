@@ -3,7 +3,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 // Navigation params. These must be `type`s and not `interface`s
 export type RootStackParamList = {
   "Job Management": undefined;
-  "Edit Job": { job?: Job; updateJob: (job: Job) => void };
+  "Edit Job": { job?: Job; onSubmit: (job: Job) => void };
 };
 
 export type JobMgmtProps = NativeStackScreenProps<RootStackParamList, "Job Management">;

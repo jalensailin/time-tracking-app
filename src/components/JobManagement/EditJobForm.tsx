@@ -5,10 +5,10 @@ import { Job } from "../../types";
 
 interface EditJobFormProps {
   job: Job;
-  updateJob: (job: Job) => void;
+  onSubmit: (job: Job) => void;
 }
 
-const EditJobForm = ({ job, updateJob }: EditJobFormProps) => {
+const EditJobForm = ({ job, onSubmit }: EditJobFormProps) => {
   const {
     control,
     handleSubmit,
@@ -42,7 +42,7 @@ const EditJobForm = ({ job, updateJob }: EditJobFormProps) => {
         )}
       />
 
-      <Button title="Add Job" onPress={handleSubmit(updateJob)} />
+      <Button title="Add Job" onPress={handleSubmit(onSubmit)} />
     </View>
   );
 };

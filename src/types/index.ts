@@ -9,11 +9,16 @@ export type RootStackParamList = {
 export type JobMgmtProps = NativeStackScreenProps<RootStackParamList, "Job Management">;
 export type EditProps = NativeStackScreenProps<RootStackParamList, "Edit Job">;
 
+interface ClockIn {
+  start: Date;
+  end?: Date;
+}
+
 export interface Job {
   id: string;
   name: string;
   client?: string;
   basePayRate: number;
   clockedIn: boolean;
-  clockIns: { start: Date; end?: Date }[];
+  clockIns: ClockIn[];
 }

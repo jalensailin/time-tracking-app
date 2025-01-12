@@ -5,7 +5,7 @@ import { JobMgmtProps } from "../types";
 import { useJobContext } from "../context/JobContext";
 
 const JobManagementScreen = ({ navigation }: JobMgmtProps) => {
-  const { jobs, deleteJob } = useJobContext();
+  const { jobs } = useJobContext();
 
   return (
     <View style={styles.container}>
@@ -13,7 +13,7 @@ const JobManagementScreen = ({ navigation }: JobMgmtProps) => {
         data={jobs}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <JobItem job={item} onDelete={deleteJob} onEdit={() => navigation.navigate("Edit Job", { id: item.id })} />
+          <JobItem job={item} onEdit={() => navigation.navigate("Edit Job", { id: item.id })} />
         )}
       />
       <Button title="+" onPress={() => navigation.navigate("Edit Job", {})} />

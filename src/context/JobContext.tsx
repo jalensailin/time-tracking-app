@@ -27,11 +27,9 @@ export const JobProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       const now = new Date();
       if (job.clockedIn) {
-        console.log("Clocking out");
         const lastClockIn = job.clockIns[job.clockIns.length - 1];
         return { ...job, clockIns: [...job.clockIns, { start: lastClockIn.start, end: now }], clockedIn: false };
       } else {
-        console.log(`Clocking in:`, job);
         return { ...job, clockIns: [...job.clockIns, { start: now }], clockedIn: true };
       }
     });

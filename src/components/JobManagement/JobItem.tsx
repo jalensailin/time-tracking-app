@@ -5,12 +5,11 @@ import { useJobContext } from "../../context/JobContext";
 
 interface JobItemProps {
   job: Job;
-  onDelete: (id: string) => void;
   onEdit: (job: Job) => void;
 }
 
-const JobItem = ({ job, onDelete, onEdit }: JobItemProps) => {
-  const { clockInOut } = useJobContext();
+const JobItem = ({ job, onEdit }: JobItemProps) => {
+  const { clockInOut, deleteJob } = useJobContext();
   const { name, basePayRate, id } = job;
 
   return (
@@ -20,7 +19,7 @@ const JobItem = ({ job, onDelete, onEdit }: JobItemProps) => {
       <Text>Status: {job.clockedIn ? "Clocked In" : "Clocked Out"}</Text>
       <Button title={job.clockedIn ? "Clock Out" : "Clock In"} onPress={() => clockInOut(job.id)} />
       <Button title="Edit" onPress={() => onEdit(job)} />
-      <Button title="Delete" onPress={() => onDelete(id)} />
+      <Button title="Delete" onPress={() => deleteJob(id)} />
     </View>
   );
 };

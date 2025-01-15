@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, FlatList } from "react-native";
 
 import { ClockIn } from "../../types";
+import { format } from "date-fns";
 
 interface ClockInHistoryProps {
   history: ClockIn[];
@@ -15,8 +16,8 @@ const ClockInHistory = ({ history }: ClockInHistoryProps) => {
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={styles.historyItem}>
-            <Text>Start: {new Date(item.start).toLocaleString()}</Text>
-            <Text>End: {item.end ? new Date(item.end).toLocaleString() : "In Progress"}</Text>
+            <Text>Start: {format(item.start, "Pp")}</Text>
+            <Text>End: {item.end ? format(item.end, "Pp") : "In Progress"}</Text>
           </View>
         )}
         ListEmptyComponent={<Text style={styles.emptyText}>No history available.</Text>}

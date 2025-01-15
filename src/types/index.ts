@@ -15,7 +15,7 @@ export type RootStackParamList = {
 export type JobMgmtProps = NativeStackScreenProps<RootStackParamList, "Job Management">;
 export type EditProps = NativeStackScreenProps<RootStackParamList, "Edit Job">;
 
-interface ClockIn {
+export interface ClockIn {
   start: Date;
   end?: Date;
 }

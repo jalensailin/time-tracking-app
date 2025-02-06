@@ -1,11 +1,12 @@
-import { useState } from "react";
 import { View, StyleSheet, Button } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable";
+
 import { useJobContext } from "../../context/JobContext";
 import { Job } from "../../types";
+
 import JobDetails from "./JobDetails";
 import ClockInButton from "./ClockInButton";
-import ClockInHistory from "./ClockInHistory";
 import JobActions from "./JobActions";
 
 interface JobItemProps {
@@ -13,8 +14,8 @@ interface JobItemProps {
 }
 
 const JobItem = ({ job }: JobItemProps) => {
+  const navigation = useNavigation();
   const { clockInOut, deleteJob } = useJobContext();
-  const [showHistory, setShowHistory] = useState(false);
 
   return (
     <View style={styles.clipWrapper}>
@@ -23,12 +24,8 @@ const JobItem = ({ job }: JobItemProps) => {
           <JobDetails job={job} />
           <View style={styles.buttonRow}>
             <ClockInButton clockedIn={job.clockedIn} onPress={() => clockInOut(job.id)} />
-            <Button
-              title={showHistory ? "Hide History" : "Show History"}
-              onPress={() => setShowHistory(!showHistory)}
-            />
+            <Button title="View Clock History" onPress={() => navigation.navigate("ClockHistory", { jobId: job.id })} />
           </View>
-          {showHistory && <ClockInHistory history={job.clockIns} />}
         </View>
       </Swipeable>
     </View>

@@ -10,10 +10,12 @@ declare global {
 export type RootStackParamList = {
   "Job Management": undefined;
   "Edit Job": { id?: string };
+  ClockHistory: { jobId: string };
 };
 
 export type JobMgmtProps = NativeStackScreenProps<RootStackParamList, "Job Management">;
 export type EditProps = NativeStackScreenProps<RootStackParamList, "Edit Job">;
+export type ClockHistoryProps = NativeStackScreenProps<RootStackParamList, "ClockHistory">;
 
 export interface ClockIn {
   start: Date;

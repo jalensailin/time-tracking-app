@@ -5,7 +5,7 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 import { useJobContext } from "../context/JobContext";
 import { ClockEntry as ClockEntryType } from "../types";
 
-import ClockEntry from "../components/JobManagement/ClockEntry";
+import ClockEntry from "../components/TimeClock/ClockEntry";
 
 const ClockHistoryScreen = () => {
   const route = useRoute();

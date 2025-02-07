@@ -6,7 +6,7 @@ import { useJobContext } from "../../context/JobContext";
 import { Job } from "../../types";
 
 import JobDetails from "./JobDetails";
-import ClockInButton from "./ClockInButton";
+import ClockInButton from "../TimeClock/ClockInButton";
 import JobActions from "./JobActions";
 
 interface JobItemProps {

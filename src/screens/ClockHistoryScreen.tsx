@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { View, Text, FlatList, StyleSheet, Button, Alert, Modal, TextInput } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
+
 import { useJobContext } from "../context/JobContext";
-import { ClockIn } from "../types";
+import { ClockEntry as ClockEntryType } from "../types";
+
 import ClockEntry from "../components/JobManagement/ClockEntry";
 
 const ClockHistoryScreen = () => {
@@ -12,7 +14,7 @@ const ClockHistoryScreen = () => {
   const { jobId } = route.params as { jobId: string };
   const job = jobs.find((job) => job.id === jobId);
 
-  const [selectedEntry, setSelectedEntry] = useState<ClockIn | null>(null);
+  const [selectedEntry, setSelectedEntry] = useState<ClockEntryType | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [newStart, setNewStart] = useState<string>("");
   const [newEnd, setNewEnd] = useState<string>("");
@@ -26,10 +28,10 @@ const ClockHistoryScreen = () => {
   }
 
   // Open edit modal
-  const handleEdit = (clockIn: ClockIn) => {
-    setSelectedEntry(clockIn);
-    setNewStart(clockIn.start.toISOString());
-    setNewEnd(clockIn.end ? clockIn.end.toISOString() : "");
+  const handleEdit = (clockEntry: ClockEntryType) => {
+    setSelectedEntry(clockEntry);
+    setNewStart(clockEntry.start.toISOString());
+    setNewEnd(clockEntry.end ? clockEntry.end.toISOString() : "");
     setModalVisible(true);
   };
 
@@ -43,10 +45,10 @@ const ClockHistoryScreen = () => {
   };
 
   // Delete clock-in entry
-  const handleDelete = (clockIn: ClockIn) => {
+  const handleDelete = (clockEntry: ClockEntryType) => {
     Alert.alert("Confirm Delete", "Are you sure you want to delete this entry?", [
       { text: "Cancel", style: "cancel" },
-      { text: "Delete", onPress: () => deleteClockEntry(jobId, clockIn.start), style: "destructive" },
+      { text: "Delete", onPress: () => deleteClockEntry(jobId, clockEntry.start), style: "destructive" },
     ]);
   };
 
@@ -54,10 +56,10 @@ const ClockHistoryScreen = () => {
     <View style={styles.container}>
       <Text style={styles.title}>{job.name} - Clock-In History</Text>
       <FlatList
-        data={job.clockIns}
+        data={job.clockEntries}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }) => (
-          <ClockEntry clockIn={item} onEdit={() => handleEdit(item)} onDelete={() => handleDelete(item)} />
+          <ClockEntry entry={item} onEdit={() => handleEdit(item)} onDelete={() => handleDelete(item)} />
         )}
         ListEmptyComponent={<Text style={styles.emptyText}>No history available.</Text>}
       />

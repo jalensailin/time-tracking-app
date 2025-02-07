@@ -29,10 +29,12 @@ export const JobProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       const now = new Date();
       if (job.clockedIn) {
-        const updatedClockIns = job.clockIns.map((clockIn) => (clockIn.end ? clockIn : { ...clockIn, end: now }));
-        return { ...job, clockIns: updatedClockIns, clockedIn: false };
+        const updatedClockEntries = job.clockEntries.map((clockEntry) =>
+          clockEntry.end ? clockEntry : { ...clockEntry, end: now }
+        );
+        return { ...job, clockEntries: updatedClockEntries, clockedIn: false };
       } else {
-        return { ...job, clockIns: [...job.clockIns, { start: now }], clockedIn: true };
+        return { ...job, clockEntries: [...job.clockEntries, { start: now }], clockedIn: true };
       }
     });
 
@@ -45,7 +47,7 @@ export const JobProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         job.id === jobId
           ? {
               ...job,
-              clockIns: job.clockIns.map((entry) =>
+              clockEntries: job.clockEntries.map((entry) =>
                 entry.start.getTime() === originalStart.getTime() ? { start: newStart, end: newEnd } : entry
               ),
             }
@@ -58,7 +60,7 @@ export const JobProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setJobs((prevJobs) =>
       prevJobs.map((job) =>
         job.id === jobId
-          ? { ...job, clockIns: job.clockIns.filter((entry) => entry.start.getTime() !== start.getTime()) }
+          ? { ...job, clockEntries: job.clockEntries.filter((entry) => entry.start.getTime() !== start.getTime()) }
           : job
       )
     );

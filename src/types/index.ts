@@ -17,7 +17,7 @@ export type JobMgmtProps = NativeStackScreenProps<RootStackParamList, "Job Manag
 export type EditProps = NativeStackScreenProps<RootStackParamList, "Edit Job">;
 export type ClockHistoryProps = NativeStackScreenProps<RootStackParamList, "ClockHistory">;
 
-export interface ClockIn {
+export interface ClockEntry {
   start: Date;
   end?: Date;
 }
@@ -28,5 +28,5 @@ export interface Job {
   client?: string;
   basePayRate: number;
   clockedIn: boolean;
-  clockIns: ClockIn[];
+  clockEntries: ClockEntry[];
 }

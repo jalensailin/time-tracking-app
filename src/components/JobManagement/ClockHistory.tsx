@@ -1,13 +1,13 @@
 import { View, Text, StyleSheet, FlatList } from "react-native";
-
-import { ClockIn } from "../../types";
 import { format } from "date-fns";
 
-interface ClockInHistoryProps {
-  history: ClockIn[];
+import { ClockEntry as ClockEntryType } from "../../types";
+
+interface ClockHistoryProps {
+  history: ClockEntryType[];
 }
 
-const ClockInHistory = ({ history }: ClockInHistoryProps) => {
+const ClockHistory = ({ history }: ClockHistoryProps) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Clock-In History</Text>
@@ -46,4 +46,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ClockInHistory;
+export default ClockHistory;

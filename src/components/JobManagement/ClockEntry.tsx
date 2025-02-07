@@ -1,18 +1,19 @@
 import { View, Text, StyleSheet, Button } from "react-native";
 import { format } from "date-fns";
-import { ClockIn } from "../../types";
 
-interface ClockInEntryProps {
-  clockIn: ClockIn;
+import { ClockEntry as ClockEntryType } from "../../types";
+
+interface ClockEntryProps {
+  entry: ClockEntryType;
   onEdit: () => void;
   onDelete: () => void;
 }
 
-const ClockInEntry = ({ clockIn, onEdit, onDelete }: ClockInEntryProps) => {
+const ClockEntry = ({ entry, onEdit, onDelete }: ClockEntryProps) => {
   return (
     <View style={styles.entry}>
-      <Text>Start: {format(clockIn.start, "Pp")}</Text>
-      <Text>End: {clockIn.end ? format(clockIn.end, "Pp") : "In Progress"}</Text>
+      <Text>Start: {format(entry.start, "Pp")}</Text>
+      <Text>End: {entry.end ? format(entry.end, "Pp") : "In Progress"}</Text>
       <View style={styles.buttonRow}>
         <Button title="Edit" onPress={onEdit} />
         <Button title="Delete" onPress={onDelete} color="red" />
@@ -34,4 +35,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ClockInEntry;
+export default ClockEntry;

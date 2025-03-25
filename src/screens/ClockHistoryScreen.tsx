@@ -1,23 +1,22 @@
-import { useState } from "react";
-import { View, Text, FlatList, StyleSheet, Button, Alert, Modal, TextInput } from "react-native";
+import { View, Text, FlatList, StyleSheet, Button, Alert } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 
 import { useJobContext } from "../context/JobContext";
-import { ClockEntry as ClockEntryType } from "../types";
+import { useClockHistory } from "../hooks/useClockHistory";
 
 import ClockEntry from "../components/TimeClock/ClockEntry";
+import EditClockEntry from "../components/TimeClock/EditClockEntry";
 
-const ClockHistoryScreen = () => {
+const ClockInHistoryScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
-  const { jobs, editClockEntry, deleteClockEntry } = useJobContext();
+  const { jobs } = useJobContext();
+
   const { jobId } = route.params as { jobId: string };
   const job = jobs.find((job) => job.id === jobId);
 
-  const [selectedEntry, setSelectedEntry] = useState<ClockEntryType | null>(null);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [newStart, setNewStart] = useState<string>("");
-  const [newEnd, setNewEnd] = useState<string>("");
+  const { selectedEntry, modalVisible, openEditModal, closeModal, editClockEntry, deleteClockEntry } =
+    useClockHistory();
 
   if (!job) {
     return (
@@ -27,28 +26,11 @@ const ClockHistoryScreen = () => {
     );
   }
 
-  // Open edit modal
-  const handleEdit = (clockEntry: ClockEntryType) => {
-    setSelectedEntry(clockEntry);
-    setNewStart(clockEntry.start.toISOString());
-    setNewEnd(clockEntry.end ? clockEntry.end.toISOString() : "");
-    setModalVisible(true);
-  };
-
-  // Save edited clock-in entry
-  const saveEdit = () => {
-    if (selectedEntry) {
-      editClockEntry(jobId, selectedEntry.start, new Date(newStart), newEnd ? new Date(newEnd) : undefined);
-      setModalVisible(false);
-      setSelectedEntry(null);
-    }
-  };
-
-  // Delete clock-in entry
-  const handleDelete = (clockEntry: ClockEntryType) => {
-    Alert.alert("Confirm Delete", "Are you sure you want to delete this entry?", [
+  // Handle Delete Confirmation
+  const handleDelete = (clockInStart: Date) => {
+    Alert.alert("Confirm Delete", "Delete this clock-in entry?", [
       { text: "Cancel", style: "cancel" },
-      { text: "Delete", onPress: () => deleteClockEntry(jobId, clockEntry.start), style: "destructive" },
+      { text: "Delete", onPress: () => deleteClockEntry(jobId, clockInStart), style: "destructive" },
     ]);
   };
 
@@ -59,24 +41,24 @@ const ClockHistoryScreen = () => {
         data={job.clockEntries}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }) => (
-          <ClockEntry entry={item} onEdit={() => handleEdit(item)} onDelete={() => handleDelete(item)} />
+          <ClockEntry entry={item} onEdit={() => openEditModal(item)} onDelete={() => handleDelete(item.start)} />
         )}
         ListEmptyComponent={<Text style={styles.emptyText}>No history available.</Text>}
       />
       <Button title="Back to Job List" onPress={() => navigation.goBack()} />
 
-      {/* Edit Clock-In Entry Modal */}
-      <Modal visible={modalVisible} animationType="slide" transparent={true}>
-        <View style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>Edit Clock-In</Text>
-          <Text>Start Time (ISO Format)</Text>
-          <TextInput style={styles.input} value={newStart} onChangeText={setNewStart} />
-          <Text>End Time (ISO Format or empty for ongoing)</Text>
-          <TextInput style={styles.input} value={newEnd} onChangeText={setNewEnd} />
-          <Button title="Save" onPress={saveEdit} />
-          <Button title="Cancel" onPress={() => setModalVisible(false)} />
-        </View>
-      </Modal>
+      {/* Edit Modal */}
+      <EditClockEntry
+        visible={modalVisible}
+        clockIn={selectedEntry}
+        onSave={(newStart, newEnd) => {
+          if (selectedEntry) {
+            editClockEntry(jobId, selectedEntry.start, new Date(newStart), newEnd ? new Date(newEnd) : undefined);
+          }
+          closeModal();
+        }}
+        onClose={closeModal}
+      />
     </View>
   );
 };
@@ -102,24 +84,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "red",
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  input: {
-    width: 200,
-    padding: 10,
-    borderWidth: 1,
-    marginVertical: 5,
-    backgroundColor: "white",
-  },
 });
 
-export default ClockHistoryScreen;
+export default ClockInHistoryScreen;

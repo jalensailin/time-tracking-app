@@ -1,10 +1,11 @@
 import { useState } from "react";
 
-import { ClockEntry, Job } from "../types";
-import { useJobContext } from "../context/JobContext";
+import { useAppContext } from "../context/AppContext";
+
+import { ClockEntry } from "../types";
 
 export const useClockHistory = () => {
-  const { setClockEntries } = useJobContext();
+  const { setClockEntries } = useAppContext();
   const [selectedEntry, setSelectedEntry] = useState<ClockEntry | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
 

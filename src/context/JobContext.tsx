@@ -1,22 +1,19 @@
 import React, { createContext, useContext, useState } from "react";
 
-import { ClockEntry, Job } from "../types";
+import { Job } from "../types";
+import { useAppContext } from "./AppContext";
 
 interface JobContextType {
-  jobs: Job[];
   addJob: (job: Job) => void;
   editJob: (job: Job) => void;
   deleteJob: (id: string) => void;
-  clockEntries: ClockEntry[];
-  setClockEntries: React.Dispatch<React.SetStateAction<ClockEntry[]>>;
   clockInOut: (job: Job) => void;
 }
 
 const JobContext = createContext<JobContextType | undefined>(undefined);
 
 export const JobProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [jobs, setJobs] = useState<Job[]>([]);
-  const [clockEntries, setClockEntries] = useState<ClockEntry[]>([]);
+  const { jobs, setJobs, clockEntries, setClockEntries } = useAppContext();
 
   const addJob: JobContextType["addJob"] = (job) => setJobs([...jobs, job]);
 
@@ -44,11 +41,7 @@ export const JobProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     editJob({ ...job, clockedIn: false });
   };
 
-  return (
-    <JobContext.Provider value={{ jobs, addJob, editJob, deleteJob, clockEntries, setClockEntries, clockInOut }}>
-      {children}
-    </JobContext.Provider>
-  );
+  return <JobContext.Provider value={{ addJob, editJob, deleteJob, clockInOut }}>{children}</JobContext.Provider>;
 };
 
 export const useJobContext = () => {

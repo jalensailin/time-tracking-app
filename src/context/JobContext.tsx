@@ -1,45 +1,54 @@
 import React, { createContext, useContext, useState } from "react";
 
-import { Job } from "../types";
+import { ClockEntry, Job } from "../types";
 
 interface JobContextType {
   jobs: Job[];
   addJob: (job: Job) => void;
   editJob: (job: Job) => void;
   deleteJob: (id: string) => void;
-  clockInOut: (id: string) => void;
+  clockEntries: ClockEntry[];
+  setClockEntries: React.Dispatch<React.SetStateAction<ClockEntry[]>>;
+  clockInOut: (job: Job) => void;
 }
 
 const JobContext = createContext<JobContextType | undefined>(undefined);
 
 export const JobProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [jobs, setJobs] = useState<Job[]>([]);
+  const [clockEntries, setClockEntries] = useState<ClockEntry[]>([]);
 
-  const addJob = (job: Job) => setJobs([...jobs, job]);
+  const addJob: JobContextType["addJob"] = (job) => setJobs([...jobs, job]);
 
-  const editJob = (updatedJob: Job) => setJobs(jobs.map((job) => (job.id === updatedJob.id ? updatedJob : job)));
+  const editJob: JobContextType["editJob"] = (updatedJob) =>
+    setJobs(jobs.map((job) => (job.id === updatedJob.id ? updatedJob : job)));
 
-  const deleteJob = (id: string) => setJobs(jobs.filter((job) => job.id !== id));
+  const deleteJob: JobContextType["deleteJob"] = (id) => setJobs(jobs.filter((job) => job.id !== id));
 
-  const clockInOut = (id: string) => {
-    const newJobsList = jobs.map((job) => {
-      if (job.id !== id) return job;
+  const clockInOut: JobContextType["clockInOut"] = (job) => {
+    const currentClockEntryId = job.clockedIn ? job.clockEntryIds.at(-1) : undefined;
+    if (!currentClockEntryId) {
+      const newId = Math.random().toString();
+      const newClockEntry = { id: newId, start: new Date(), tagIds: [] };
 
-      const now = new Date();
-      if (job.clockedIn) {
-        const updatedClockEntries = job.clockEntries.map((clockEntry) =>
-          clockEntry.end ? clockEntry : { ...clockEntry, end: now }
-        );
-        return { ...job, clockEntries: updatedClockEntries, clockedIn: false };
-      } else {
-        return { ...job, clockEntries: [...job.clockEntries, { start: now }], clockedIn: true };
-      }
+      setClockEntries([...clockEntries, newClockEntry]);
+      editJob({ ...job, clockEntryIds: [...job.clockEntryIds, newId], clockedIn: true });
+      return;
+    }
+
+    const newClockEntriesList = clockEntries.map((clockEntry) => {
+      return clockEntry.id !== currentClockEntryId ? clockEntry : { ...clockEntry, end: new Date() };
     });
 
-    setJobs(newJobsList);
+    setClockEntries(newClockEntriesList);
+    editJob({ ...job, clockedIn: false });
   };
 
-  return <JobContext.Provider value={{ jobs, addJob, editJob, deleteJob, clockInOut }}>{children}</JobContext.Provider>;
+  return (
+    <JobContext.Provider value={{ jobs, addJob, editJob, deleteJob, clockEntries, setClockEntries, clockInOut }}>
+      {children}
+    </JobContext.Provider>
+  );
 };
 
 export const useJobContext = () => {

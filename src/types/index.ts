@@ -17,16 +17,31 @@ export type JobMgmtProps = NativeStackScreenProps<RootStackParamList, "Job Manag
 export type EditProps = NativeStackScreenProps<RootStackParamList, "Edit Job">;
 export type ClockHistoryProps = NativeStackScreenProps<RootStackParamList, "ClockHistory">;
 
-export interface ClockEntry {
-  start: Date;
-  end?: Date;
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Some ID
+ */
+type ID = string;
+
+interface AppState {
+  jobs: Record<ID, Job>;
+  clockEntries: Record<ID, ClockEntry>;
+  // tags: Record<string, Tag>;
 }
 
 export interface Job {
-  id: string;
+  id: ID;
   name: string;
   client?: string;
   basePayRate: number;
   clockedIn: boolean;
-  clockEntries: ClockEntry[];
+  clockEntryIds: ID[];
+}
+
+export interface ClockEntry {
+  id: ID;
+  start: Date;
+  end?: Date;
+  tagIds: ID[];
 }

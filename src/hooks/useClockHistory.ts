@@ -1,35 +1,21 @@
 import { useState } from "react";
 
 import { ClockEntry, Job } from "../types";
+import { useJobContext } from "../context/JobContext";
 
 export const useClockHistory = () => {
-  const [jobs, setJobs] = useState<Job[]>([]);
+  const { setClockEntries } = useJobContext();
   const [selectedEntry, setSelectedEntry] = useState<ClockEntry | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const editClockEntry = (jobId: string, originalStart: Date, newStart: Date, newEnd?: Date) => {
-    setJobs((prevJobs) =>
-      prevJobs.map((job) =>
-        job.id === jobId
-          ? {
-              ...job,
-              clockEntries: job.clockEntries.map((entry) =>
-                entry.start.getTime() === originalStart.getTime() ? { start: newStart, end: newEnd } : entry
-              ),
-            }
-          : job
-      )
+  const editClockEntry = (clockEntryId: string, newStart: Date, newEnd?: Date) => {
+    setClockEntries((prevClockEntries) =>
+      prevClockEntries.map((entry) => (entry.id === clockEntryId ? { ...entry, start: newStart, end: newEnd } : entry))
     );
   };
 
-  const deleteClockEntry = (jobId: string, start: Date) => {
-    setJobs((prevJobs) =>
-      prevJobs.map((job) =>
-        job.id === jobId
-          ? { ...job, clockEntries: job.clockEntries.filter((entry) => entry.start.getTime() !== start.getTime()) }
-          : job
-      )
-    );
+  const deleteClockEntry = (clockEntryId: string) => {
+    setClockEntries((prevClockEntries) => prevClockEntries.filter((entry) => entry.id !== clockEntryId));
   };
 
   const openEditModal = (clockEntry: ClockEntry) => {

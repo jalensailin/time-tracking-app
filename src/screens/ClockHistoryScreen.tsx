@@ -14,10 +14,10 @@ const ClockInHistoryScreen = () => {
 
   const { jobId } = route.params as { jobId: string };
   const job = jobs.find((job) => job.id === jobId);
+  const { clockEntries } = useJobContext();
 
   const { selectedEntry, modalVisible, openEditModal, closeModal, editClockEntry, deleteClockEntry } =
     useClockHistory();
-
   if (!job) {
     return (
       <View style={styles.container}>
@@ -27,10 +27,10 @@ const ClockInHistoryScreen = () => {
   }
 
   // Handle Delete Confirmation
-  const handleDelete = (clockInStart: Date) => {
-    Alert.alert("Confirm Delete", "Delete this clock-in entry?", [
+  const handleDelete = (clockEntryId: string) => {
+    Alert.alert("Confirm Delete", "Delete this Time Clock entry?", [
       { text: "Cancel", style: "cancel" },
-      { text: "Delete", onPress: () => deleteClockEntry(jobId, clockInStart), style: "destructive" },
+      { text: "Delete", onPress: () => deleteClockEntry(clockEntryId), style: "destructive" },
     ]);
   };
 
@@ -38,10 +38,10 @@ const ClockInHistoryScreen = () => {
     <View style={styles.container}>
       <Text style={styles.title}>{job.name} - Clock-In History</Text>
       <FlatList
-        data={job.clockEntries}
+        data={clockEntries}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }) => (
-          <ClockEntry entry={item} onEdit={() => openEditModal(item)} onDelete={() => handleDelete(item.start)} />
+          <ClockEntry entry={item} onEdit={() => openEditModal(item)} onDelete={() => handleDelete(item.id)} />
         )}
         ListEmptyComponent={<Text style={styles.emptyText}>No history available.</Text>}
       />
@@ -53,7 +53,7 @@ const ClockInHistoryScreen = () => {
         clockIn={selectedEntry}
         onSave={(newStart, newEnd) => {
           if (selectedEntry) {
-            editClockEntry(jobId, selectedEntry.start, new Date(newStart), newEnd ? new Date(newEnd) : undefined);
+            editClockEntry(selectedEntry.id, selectedEntry.start, newEnd ? new Date(newEnd) : undefined);
           }
           closeModal();
         }}

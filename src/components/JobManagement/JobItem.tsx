@@ -16,14 +16,13 @@ interface JobItemProps {
 const JobItem = ({ job }: JobItemProps) => {
   const navigation = useNavigation();
   const { clockInOut, deleteJob } = useJobContext();
-
   return (
     <View style={styles.clipWrapper}>
       <Swipeable renderRightActions={() => <JobActions jobId={job.id} deleteJob={deleteJob} />}>
         <View style={styles.bubble}>
           <JobDetails job={job} />
           <View style={styles.buttonRow}>
-            <ClockInButton clockedIn={job.clockedIn} onPress={() => clockInOut(job.id)} />
+            <ClockInButton clockedIn={job.clockedIn} onPress={() => clockInOut(job)} />
             <Button title="View Clock History" onPress={() => navigation.navigate("ClockHistory", { jobId: job.id })} />
           </View>
         </View>

@@ -2,8 +2,10 @@ import { View, StyleSheet, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 
-import { useJobContext } from "../../context/JobContext";
 import { Job } from "../../types";
+
+import { useJobContext } from "../../context/JobContext";
+import { useClockHistory } from "../../hooks/useClockHistory";
 
 import JobDetails from "./JobDetails";
 import ClockInButton from "../TimeClock/ClockInButton";
@@ -15,7 +17,8 @@ interface JobItemProps {
 
 const JobItem = ({ job }: JobItemProps) => {
   const navigation = useNavigation();
-  const { clockInOut, deleteJob } = useJobContext();
+  const { clockInOut } = useClockHistory();
+  const { deleteJob } = useJobContext();
   return (
     <View style={styles.clipWrapper}>
       <Swipeable renderRightActions={() => <JobActions jobId={job.id} deleteJob={deleteJob} />}>

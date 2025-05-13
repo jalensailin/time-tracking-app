@@ -12,6 +12,7 @@ import { JobProvider } from "./src/context/JobContext";
 import JobManagementScreen from "./src/screens/JobManagementScreen";
 import EditJobScreen from "./src/screens/EditJobScreen";
 import ClockHistoryScreen from "./src/screens/ClockHistoryScreen";
+import { ClockEntryProvider } from "./src/context/ClockEntryContext";
 
 /* -------------------------------------------------------------------------- */
 /*                                     App                                    */
@@ -24,11 +25,13 @@ const App = () => {
       <NavigationContainer>
         <AppProvider>
           <JobProvider>
-            <RootStack.Navigator initialRouteName="Job Management">
-              <RootStack.Screen name="Job Management" component={JobManagementScreen} />
-              <RootStack.Screen name="Edit Job" component={EditJobScreen} />
-              <RootStack.Screen name="ClockHistory" component={ClockHistoryScreen} />
-            </RootStack.Navigator>
+            <ClockEntryProvider>
+              <RootStack.Navigator initialRouteName="Job Management">
+                <RootStack.Screen name="Job Management" component={JobManagementScreen} />
+                <RootStack.Screen name="Edit Job" component={EditJobScreen} />
+                <RootStack.Screen name="ClockHistory" component={ClockHistoryScreen} />
+              </RootStack.Navigator>
+            </ClockEntryProvider>
           </JobProvider>
         </AppProvider>
       </NavigationContainer>

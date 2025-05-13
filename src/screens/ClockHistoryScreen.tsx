@@ -6,6 +6,7 @@ import { useClockHistory } from "../hooks/useClockHistory";
 
 import ClockEntry from "../components/TimeClock/ClockEntry";
 import EditClockEntry from "../components/TimeClock/EditClockEntry";
+import { useClockEntryContext } from "../context/ClockEntryContext";
 
 const ClockInHistoryScreen = () => {
   const route = useRoute();
@@ -15,8 +16,8 @@ const ClockInHistoryScreen = () => {
   const { jobId } = route.params as { jobId: string };
   const job = jobs.find((job) => job.id === jobId);
 
-  const { selectedEntry, modalVisible, openEditModal, closeModal, editClockEntry, deleteClockEntry } =
-    useClockHistory();
+  const { selectedEntry, modalVisible, openEditModal, closeModal } = useClockHistory();
+  const { editClockEntry, deleteClockEntry } = useClockEntryContext();
   if (!job) {
     return (
       <View style={styles.container}>
@@ -52,7 +53,7 @@ const ClockInHistoryScreen = () => {
         clockIn={selectedEntry}
         onSave={(newStart, newEnd) => {
           if (selectedEntry) {
-            editClockEntry(selectedEntry.id, selectedEntry.start, newEnd ? new Date(newEnd) : undefined);
+            editClockEntry({ ...selectedEntry, start: new Date(newStart), end: newEnd ? new Date(newEnd) : undefined });
           }
           closeModal();
         }}

@@ -12,7 +12,7 @@ interface JobContextType {
 const JobContext = createContext<JobContextType | undefined>(undefined);
 
 export const JobProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { jobs, setJobs, clockEntries, setClockEntries } = useAppContext();
+  const { jobs, setJobs } = useAppContext();
 
   const addJob: JobContextType["addJob"] = (job) => setJobs([...jobs, job]);
 

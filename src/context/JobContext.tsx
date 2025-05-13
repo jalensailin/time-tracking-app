@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
 
 import { Job } from "../types";
 import { useAppContext } from "./AppContext";

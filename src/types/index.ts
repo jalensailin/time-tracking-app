@@ -19,9 +19,7 @@ export type ClockHistoryProps = NativeStackScreenProps<RootStackParamList, "Cloc
 
 /* -------------------------------------------------------------------------- */
 
-/**
- * Some ID
- */
+/** Some ID */
 type ID = string;
 
 interface AppState {

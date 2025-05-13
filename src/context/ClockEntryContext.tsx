@@ -1,56 +1,48 @@
-import { createContext, useContext } from "react";
-
+import { createContext, useContext, useMemo } from "react";
 import { ClockEntry, Job } from "../types";
-
 import { useAppContext } from "./AppContext";
-import { useJobContext } from "./JobContext";
 
 interface ClockEntryContextType {
+  getClockEntriesForJob: (jobId: string) => ClockEntry[];
   editClockEntry: (clockEntry: ClockEntry) => void;
   deleteClockEntry: (clockEntryId: string) => void;
-  clockInOut: (job: Job) => void;
+  clockInOut: (jobId: string) => void;
 }
 
 const ClockEntryContext = createContext<ClockEntryContextType | undefined>(undefined);
 
 export const ClockEntryProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { clockEntries, setClockEntries } = useAppContext();
-  const { editJob } = useJobContext();
+  const { state, dispatch } = useAppContext();
 
-  const addClockEntry = (job: Job) => {
-    const newId = Math.random().toString();
-    const newClockEntry = { id: newId, start: new Date(), tagIds: [] };
+  // Helper function to get clock entries for a specific job
+  const getClockEntriesForJob = (jobId: string): ClockEntry[] => {
+    const job = state.jobs[jobId];
+    if (!job) return [];
 
-    setClockEntries([...clockEntries, newClockEntry]);
-    editJob({ ...job, clockEntryIds: [...job.clockEntryIds, newId], clockedIn: true });
+    return job.clockEntryIds.map((id) => state.clockEntries[id]).filter((entry) => entry !== undefined);
   };
 
-  const editClockEntry: ClockEntryContextType["editClockEntry"] = (newEntry) => {
-    setClockEntries((prevClockEntries) =>
-      prevClockEntries.map((oldEntry) => (oldEntry.id === newEntry.id ? newEntry : oldEntry))
-    );
+  const editClockEntry = (clockEntry: ClockEntry) => {
+    dispatch({ type: "EDIT_CLOCK_ENTRY", payload: clockEntry });
   };
 
-  const deleteClockEntry: ClockEntryContextType["deleteClockEntry"] = (clockEntryId) => {
-    setClockEntries((prevClockEntries) => prevClockEntries.filter((entry) => entry.id !== clockEntryId));
+  const deleteClockEntry = (clockEntryId: string) => {
+    dispatch({ type: "DELETE_CLOCK_ENTRY", payload: clockEntryId });
   };
 
-  const clockInOut: ClockEntryContextType["clockInOut"] = (job) => {
-    const clockEntry = clockEntries.find((ce) => {
-      if (!job.clockedIn) return false;
-      return ce.id === job.clockEntryIds.at(-1);
-    });
-
-    if (!clockEntry) {
-      addClockEntry(job);
-    } else {
-      editClockEntry({ ...clockEntry, end: new Date() });
-      editJob({ ...job, clockedIn: false });
-    }
+  const clockInOut = (jobId: string) => {
+    dispatch({ type: "CLOCK_IN_OUT", payload: { jobId } });
   };
 
   return (
-    <ClockEntryContext.Provider value={{ editClockEntry, deleteClockEntry, clockInOut }}>
+    <ClockEntryContext.Provider
+      value={{
+        getClockEntriesForJob,
+        editClockEntry,
+        deleteClockEntry,
+        clockInOut,
+      }}
+    >
       {children}
     </ClockEntryContext.Provider>
   );

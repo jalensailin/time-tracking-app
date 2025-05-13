@@ -4,13 +4,11 @@ import { Controller, useForm } from "react-hook-form";
 import { EditProps, Job } from "../types";
 
 import { useJobContext } from "../context/JobContext";
-import { useAppContext } from "../context/AppContext";
 
 const EditJobScreen = ({ navigation, route }: EditProps) => {
-  const { jobs } = useAppContext();
+  const { jobs } = useJobContext();
   const { addJob, editJob } = useJobContext();
   const { id } = route.params;
-
   const job = jobs.find((job) => job.id === id);
   const blankJob: Job = {
     id: Math.random().toString(),

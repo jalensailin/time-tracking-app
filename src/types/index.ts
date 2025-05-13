@@ -20,9 +20,9 @@ export type ClockHistoryProps = NativeStackScreenProps<RootStackParamList, "Cloc
 /* -------------------------------------------------------------------------- */
 
 /** Some ID */
-type ID = string;
+export type ID = string;
 
-interface AppState {
+export interface AppState {
   jobs: Record<ID, Job>;
   clockEntries: Record<ID, ClockEntry>;
   // tags: Record<string, Tag>;
@@ -43,3 +43,11 @@ export interface ClockEntry {
   end?: Date;
   tagIds: ID[];
 }
+
+// Future: Tag interface
+// export interface Tag {
+//   id: ID;
+//   name: string;
+//   color: string;
+//   // Add more custom fields as needed
+// }

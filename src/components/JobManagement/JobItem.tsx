@@ -25,7 +25,7 @@ const JobItem = ({ job }: JobItemProps) => {
         <View style={styles.bubble}>
           <JobDetails job={job} />
           <View style={styles.buttonRow}>
-            <ClockInButton clockedIn={job.clockedIn} onPress={() => clockInOut(job)} />
+            <ClockInButton clockedIn={job.clockedIn} onPress={() => clockInOut(job.id)} />
             <Button title="View Clock History" onPress={() => navigation.navigate("ClockHistory", { jobId: job.id })} />
           </View>
         </View>

@@ -1,10 +1,10 @@
-import { createContext, useContext } from "react";
-
+import { createContext, useContext, useMemo } from "react";
 import { Job } from "../types";
 import { useAppContext } from "./AppContext";
 
 interface JobContextType {
-  addJob: (job: Job) => void;
+  jobs: Job[];
+  addJob: (jobData: Omit<Job, "id" | "clockEntryIds" | "clockedIn">) => void;
   editJob: (job: Job) => void;
   deleteJob: (id: string) => void;
 }
@@ -12,16 +12,24 @@ interface JobContextType {
 const JobContext = createContext<JobContextType | undefined>(undefined);
 
 export const JobProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { jobs, setJobs } = useAppContext();
+  const { state, dispatch } = useAppContext();
 
-  const addJob: JobContextType["addJob"] = (job) => setJobs([...jobs, job]);
+  // Convert the jobs object to an array for easier consumption by components
+  const jobs = useMemo<Job[]>(() => Object.values(state.jobs), [state.jobs]);
 
-  const editJob: JobContextType["editJob"] = (updatedJob) =>
-    setJobs(jobs.map((job) => (job.id === updatedJob.id ? updatedJob : job)));
+  const addJob = (jobData: Omit<Job, "id" | "clockEntryIds" | "clockedIn">) => {
+    dispatch({ type: "ADD_JOB", payload: jobData });
+  };
 
-  const deleteJob: JobContextType["deleteJob"] = (id) => setJobs(jobs.filter((job) => job.id !== id));
+  const editJob = (updatedJob: Job) => {
+    dispatch({ type: "EDIT_JOB", payload: updatedJob });
+  };
 
-  return <JobContext.Provider value={{ addJob, editJob, deleteJob }}>{children}</JobContext.Provider>;
+  const deleteJob = (id: string) => {
+    dispatch({ type: "DELETE_JOB", payload: id });
+  };
+
+  return <JobContext.Provider value={{ jobs, addJob, editJob, deleteJob }}>{children}</JobContext.Provider>;
 };
 
 export const useJobContext = () => {

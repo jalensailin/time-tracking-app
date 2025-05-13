@@ -1,20 +1,24 @@
 import { View, Text, FlatList, StyleSheet, Button, Alert } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 
-import { useAppContext } from "../context/AppContext";
+import { useClockEntryContext } from "../context/ClockEntryContext";
+import { useJobContext } from "../context/JobContext";
+
 import { useClockHistory } from "../hooks/useClockHistory";
 
 import ClockEntry from "../components/TimeClock/ClockEntry";
 import EditClockEntry from "../components/TimeClock/EditClockEntry";
-import { useClockEntryContext } from "../context/ClockEntryContext";
 
 const ClockInHistoryScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
-  const { jobs, clockEntries } = useAppContext();
 
   const { jobId } = route.params as { jobId: string };
+  const { jobs } = useJobContext();
+  const { getClockEntriesForJob } = useClockEntryContext();
+
   const job = jobs.find((job) => job.id === jobId);
+  const clockEntries = getClockEntriesForJob(jobId);
 
   const { selectedEntry, modalVisible, openEditModal, closeModal } = useClockHistory();
   const { editClockEntry, deleteClockEntry } = useClockEntryContext();

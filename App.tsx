@@ -5,14 +5,12 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { RootStackParamList } from "./src/types";
 
 /* ---------------------------- Context Providers --------------------------- */
-import { AppProvider } from "./src/context/AppContext";
-import { JobProvider } from "./src/context/JobContext";
+import { GlobalStateProvider } from "./src/context/GlobalProvider";
 
 /* --------------------------------- Screens -------------------------------- */
 import JobManagementScreen from "./src/screens/JobManagementScreen";
 import EditJobScreen from "./src/screens/EditJobScreen";
 import ClockHistoryScreen from "./src/screens/ClockHistoryScreen";
-import { ClockEntryProvider } from "./src/context/ClockEntryContext";
 
 /* -------------------------------------------------------------------------- */
 /*                                     App                                    */
@@ -23,17 +21,13 @@ const App = () => {
   return (
     <GestureHandlerRootView>
       <NavigationContainer>
-        <AppProvider>
-          <JobProvider>
-            <ClockEntryProvider>
-              <RootStack.Navigator initialRouteName="Job Management">
-                <RootStack.Screen name="Job Management" component={JobManagementScreen} />
-                <RootStack.Screen name="Edit Job" component={EditJobScreen} />
-                <RootStack.Screen name="ClockHistory" component={ClockHistoryScreen} />
-              </RootStack.Navigator>
-            </ClockEntryProvider>
-          </JobProvider>
-        </AppProvider>
+        <GlobalStateProvider>
+          <RootStack.Navigator initialRouteName="Job Management">
+            <RootStack.Screen name="Job Management" component={JobManagementScreen} />
+            <RootStack.Screen name="Edit Job" component={EditJobScreen} />
+            <RootStack.Screen name="ClockHistory" component={ClockHistoryScreen} />
+          </RootStack.Navigator>
+        </GlobalStateProvider>
       </NavigationContainer>
     </GestureHandlerRootView>
   );

@@ -1,23 +1,23 @@
 import { createContext, useContext } from "react";
 
-import { ClockEntry } from "../types";
+import { ClockEntry, ID } from "../types";
 import {
-  clockInOut as clockInOutAction,
-  deleteClockEntry as deleteClockEntryAction,
-  editClockEntry as editClockEntryAction,
+  EDIT_CLOCK_ENTRY,
+  DELETE_CLOCK_ENTRY,
+  CLOCK_IN_OUT,
 } from "../state/actions/clockEntryActions";
 
 import { useAppContext } from "../context/AppContext";
 
 interface ClockEntryContextType {
-  getClockEntriesForJob: (jobId: string) => ClockEntry[];
+  getClockEntriesForJob: (jobId: ID) => ClockEntry[];
   editClockEntry: (clockEntry: ClockEntry) => void;
-  deleteClockEntry: (clockEntryId: string) => void;
-  clockInOut: (jobId: string) => void;
+  deleteClockEntry: (clockEntryId: ID) => void;
+  clockInOut: (jobId: ID) => void;
 }
 
 const ClockEntryContext = createContext<ClockEntryContextType | undefined>(
-  undefined,
+  undefined
 );
 
 export const ClockEntryProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -26,7 +26,7 @@ export const ClockEntryProvider: React.FC<{ children: React.ReactNode }> = ({
   const { state, dispatch } = useAppContext();
 
   // Helper function to get clock entries for a specific job
-  const getClockEntriesForJob = (jobId: string): ClockEntry[] => {
+  const getClockEntriesForJob = (jobId: ID): ClockEntry[] => {
     const job = state.jobs[jobId];
     if (!job) return [];
 
@@ -36,15 +36,15 @@ export const ClockEntryProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const editClockEntry = (clockEntry: ClockEntry) => {
-    dispatch(editClockEntryAction(clockEntry));
+    dispatch({ type: EDIT_CLOCK_ENTRY, payload: clockEntry });
   };
 
-  const deleteClockEntry = (clockEntryId: string) => {
-    dispatch(deleteClockEntryAction(clockEntryId));
+  const deleteClockEntry = (clockEntryId: ID) => {
+    dispatch({ type: DELETE_CLOCK_ENTRY, payload: clockEntryId });
   };
 
-  const clockInOut = (jobId: string) => {
-    dispatch(clockInOutAction(jobId));
+  const clockInOut = (jobId: ID) => {
+    dispatch({ type: CLOCK_IN_OUT, payload: { jobId } });
   };
 
   return (
@@ -65,7 +65,7 @@ export const useClockEntryContext = () => {
   const context = useContext(ClockEntryContext);
   if (!context) {
     throw new Error(
-      "useClockEntryContext must be used within a ClockEntryProvider",
+      "useClockEntryContext must be used within a ClockEntryProvider"
     );
   }
   return context;

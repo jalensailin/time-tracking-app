@@ -1,4 +1,4 @@
-import { ClockEntry } from "../../types";
+import { ClockEntry, ID } from "../../types";
 
 // Define all action types as constants to avoid typos
 export const ADD_CLOCK_ENTRY = "ADD_CLOCK_ENTRY";
@@ -9,7 +9,7 @@ export const CLOCK_IN_OUT = "CLOCK_IN_OUT";
 // Clock entry actions
 export interface AddClockEntryAction {
   type: typeof ADD_CLOCK_ENTRY;
-  payload: { jobId: string };
+  payload: { jobId: ID };
 }
 
 export interface EditClockEntryAction {
@@ -19,12 +19,12 @@ export interface EditClockEntryAction {
 
 export interface DeleteClockEntryAction {
   type: typeof DELETE_CLOCK_ENTRY;
-  payload: string; // entryId
+  payload: ID; // entryId
 }
 
 export interface ClockInOutAction {
   type: typeof CLOCK_IN_OUT;
-  payload: { jobId: string };
+  payload: { jobId: ID };
 }
 
 export type ClockEntryAction =
@@ -32,25 +32,3 @@ export type ClockEntryAction =
   | EditClockEntryAction
   | DeleteClockEntryAction
   | ClockInOutAction;
-
-export const addClockEntry = (jobId: string): AddClockEntryAction => ({
-  type: ADD_CLOCK_ENTRY,
-  payload: { jobId },
-});
-
-export const editClockEntry = (
-  clockEntry: ClockEntry,
-): EditClockEntryAction => ({
-  type: EDIT_CLOCK_ENTRY,
-  payload: clockEntry,
-});
-
-export const deleteClockEntry = (entryId: string): DeleteClockEntryAction => ({
-  type: DELETE_CLOCK_ENTRY,
-  payload: entryId,
-});
-
-export const clockInOut = (jobId: string): ClockInOutAction => ({
-  type: CLOCK_IN_OUT,
-  payload: { jobId },
-});

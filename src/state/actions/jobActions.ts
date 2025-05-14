@@ -1,14 +1,16 @@
-import { Job } from "../../types";
+import { Job, ID } from "../../types";
 
 // Define all action types as constants to avoid typos
 export const ADD_JOB = "ADD_JOB";
 export const EDIT_JOB = "EDIT_JOB";
 export const DELETE_JOB = "DELETE_JOB";
 
+export type NewJobData = Omit<Job, "id" | "clockEntryIds" | "clockedIn">;
+
 // Job actions
 export interface AddJobAction {
   type: typeof ADD_JOB;
-  payload: Omit<Job, "id" | "clockEntryIds" | "clockedIn">;
+  payload: NewJobData;
 }
 
 export interface EditJobAction {
@@ -18,24 +20,8 @@ export interface EditJobAction {
 
 export interface DeleteJobAction {
   type: typeof DELETE_JOB;
-  payload: string; // jobId
+  payload: ID; // jobId
 }
 
-// Union type of all possible actions
+// Union type of Job Actions.
 export type JobAction = AddJobAction | EditJobAction | DeleteJobAction;
-
-// Action creators
-export const addJob = (jobData: Omit<Job, "id" | "clockEntryIds" | "clockedIn">): AddJobAction => ({
-  type: ADD_JOB,
-  payload: jobData,
-});
-
-export const editJob = (job: Job): EditJobAction => ({
-  type: EDIT_JOB,
-  payload: job,
-});
-
-export const deleteJob = (jobId: string): DeleteJobAction => ({
-  type: DELETE_JOB,
-  payload: jobId,
-});

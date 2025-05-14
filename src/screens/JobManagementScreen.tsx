@@ -11,7 +11,11 @@ const JobManagementScreen = ({ navigation }: JobMgmtProps) => {
 
   return (
     <View style={styles.container}>
-      <FlatList data={jobs} keyExtractor={(item) => item.id} renderItem={({ item }) => <JobItem job={item} />} />
+      <FlatList
+        data={jobs}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <JobItem job={item} />}
+      />
       <Button title="+" onPress={() => navigation.navigate("Edit Job", {})} />
     </View>
   );

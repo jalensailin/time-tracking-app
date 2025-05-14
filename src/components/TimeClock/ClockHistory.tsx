@@ -17,10 +17,14 @@ const ClockHistory = ({ history }: ClockHistoryProps) => {
         renderItem={({ item }) => (
           <View style={styles.historyItem}>
             <Text>Start: {format(item.start, "Pp")}</Text>
-            <Text>End: {item.end ? format(item.end, "Pp") : "In Progress"}</Text>
+            <Text>
+              End: {item.end ? format(item.end, "Pp") : "In Progress"}
+            </Text>
           </View>
         )}
-        ListEmptyComponent={<Text style={styles.emptyText}>No history available.</Text>}
+        ListEmptyComponent={
+          <Text style={styles.emptyText}>No history available.</Text>
+        }
       />
     </View>
   );

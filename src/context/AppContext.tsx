@@ -19,10 +19,16 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [state, dispatch] = useReducer(appReducer, initialState);
 
-  return <AppContext.Provider value={{ state, dispatch }}>{children}</AppContext.Provider>;
+  return (
+    <AppContext.Provider value={{ state, dispatch }}>
+      {children}
+    </AppContext.Provider>
+  );
 };
 
 export const useAppContext = () => {

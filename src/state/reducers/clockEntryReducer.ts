@@ -11,7 +11,10 @@ function generateId() {
 }
 
 // Clock entry-related reducers
-export const handleAddClockEntry = (state: AppState, action: AddClockEntryAction): AppState => {
+export const handleAddClockEntry = (
+  state: AppState,
+  action: AddClockEntryAction,
+): AppState => {
   const { jobId } = action.payload;
   const job = state.jobs[jobId];
 
@@ -43,7 +46,10 @@ export const handleAddClockEntry = (state: AppState, action: AddClockEntryAction
   };
 };
 
-export const handleEditClockEntry = (state: AppState, action: EditClockEntryAction): AppState => {
+export const handleEditClockEntry = (
+  state: AppState,
+  action: EditClockEntryAction,
+): AppState => {
   const { payload: clockEntry } = action;
 
   return {
@@ -55,7 +61,10 @@ export const handleEditClockEntry = (state: AppState, action: EditClockEntryActi
   };
 };
 
-export const handleDeleteClockEntry = (state: AppState, action: DeleteClockEntryAction): AppState => {
+export const handleDeleteClockEntry = (
+  state: AppState,
+  action: DeleteClockEntryAction,
+): AppState => {
   const entryId = action.payload;
   const newClockEntries = { ...state.clockEntries };
   delete newClockEntries[entryId];
@@ -73,7 +82,9 @@ export const handleDeleteClockEntry = (state: AppState, action: DeleteClockEntry
         ...job,
         clockEntryIds: job.clockEntryIds.filter((id) => id !== entryId),
         // If this was the active entry, update clockedIn status
-        clockedIn: job.clockedIn && job.clockEntryIds[job.clockEntryIds.length - 1] !== entryId,
+        clockedIn:
+          job.clockedIn &&
+          job.clockEntryIds[job.clockEntryIds.length - 1] !== entryId,
       };
     }
   });
@@ -85,7 +96,10 @@ export const handleDeleteClockEntry = (state: AppState, action: DeleteClockEntry
   };
 };
 
-export const handleClockInOut = (state: AppState, action: ClockInOutAction): AppState => {
+export const handleClockInOut = (
+  state: AppState,
+  action: ClockInOutAction,
+): AppState => {
   const { jobId } = action.payload;
   const job = state.jobs[jobId];
 

@@ -15,12 +15,14 @@ const ClockInHistoryScreen = () => {
 
   const { jobId } = route.params as { jobId: string };
   const { jobs } = useJobContext();
-  const { getClockEntriesForJob, editClockEntry, deleteClockEntry } = useClockEntryContext();
+  const { getClockEntriesForJob, editClockEntry, deleteClockEntry } =
+    useClockEntryContext();
 
   const job = jobs.find((job) => job.id === jobId);
   const clockEntries = getClockEntriesForJob(jobId);
 
-  const { selectedEntry, modalVisible, openEditModal, closeModal } = useClockHistoryModal();
+  const { selectedEntry, modalVisible, openEditModal, closeModal } =
+    useClockHistoryModal();
   if (!job) {
     return (
       <View style={styles.container}>
@@ -33,7 +35,11 @@ const ClockInHistoryScreen = () => {
   const handleDelete = (clockEntryId: string) => {
     Alert.alert("Confirm Delete", "Delete this Time Clock entry?", [
       { text: "Cancel", style: "cancel" },
-      { text: "Delete", onPress: () => deleteClockEntry(clockEntryId), style: "destructive" },
+      {
+        text: "Delete",
+        onPress: () => deleteClockEntry(clockEntryId),
+        style: "destructive",
+      },
     ]);
   };
 
@@ -44,9 +50,15 @@ const ClockInHistoryScreen = () => {
         data={clockEntries}
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }) => (
-          <ClockEntry entry={item} onEdit={() => openEditModal(item)} onDelete={() => handleDelete(item.id)} />
+          <ClockEntry
+            entry={item}
+            onEdit={() => openEditModal(item)}
+            onDelete={() => handleDelete(item.id)}
+          />
         )}
-        ListEmptyComponent={<Text style={styles.emptyText}>No history available.</Text>}
+        ListEmptyComponent={
+          <Text style={styles.emptyText}>No history available.</Text>
+        }
       />
       <Button title="Back to Job List" onPress={() => navigation.goBack()} />
 
@@ -56,7 +68,11 @@ const ClockInHistoryScreen = () => {
         clockIn={selectedEntry}
         onSave={(newStart, newEnd) => {
           if (selectedEntry) {
-            editClockEntry({ ...selectedEntry, start: new Date(newStart), end: newEnd ? new Date(newEnd) : undefined });
+            editClockEntry({
+              ...selectedEntry,
+              start: new Date(newStart),
+              end: newEnd ? new Date(newEnd) : undefined,
+            });
           }
           closeModal();
         }}

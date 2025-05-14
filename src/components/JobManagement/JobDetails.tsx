@@ -12,7 +12,9 @@ const JobDetails = ({ job }: JobDetailsProps) => {
         <Text style={styles.title}>{job.name}</Text>
         <Text style={styles.payRate}>${job.basePayRate.toFixed(2)}/hr</Text>
       </View>
-      <Text style={styles.status}>Status: {job.clockedIn ? "Clocked In" : "Clocked Out"}</Text>
+      <Text style={styles.status}>
+        Status: {job.clockedIn ? "Clocked In" : "Clocked Out"}
+      </Text>
     </View>
   );
 };

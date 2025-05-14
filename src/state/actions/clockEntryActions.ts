@@ -27,14 +27,20 @@ export interface ClockInOutAction {
   payload: { jobId: string };
 }
 
-export type ClockEntryAction = AddClockEntryAction | EditClockEntryAction | DeleteClockEntryAction | ClockInOutAction;
+export type ClockEntryAction =
+  | AddClockEntryAction
+  | EditClockEntryAction
+  | DeleteClockEntryAction
+  | ClockInOutAction;
 
 export const addClockEntry = (jobId: string): AddClockEntryAction => ({
   type: ADD_CLOCK_ENTRY,
   payload: { jobId },
 });
 
-export const editClockEntry = (clockEntry: ClockEntry): EditClockEntryAction => ({
+export const editClockEntry = (
+  clockEntry: ClockEntry,
+): EditClockEntryAction => ({
   type: EDIT_CLOCK_ENTRY,
   payload: clockEntry,
 });

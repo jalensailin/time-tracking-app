@@ -41,7 +41,12 @@ const EditJobScreen = ({ navigation, route }: EditProps) => {
         control={control}
         name="name"
         render={({ field: { onChange, value } }) => (
-          <TextInput style={styles.input} placeholder="Job Name" value={value} onChangeText={onChange} />
+          <TextInput
+            style={styles.input}
+            placeholder="Job Name"
+            value={value}
+            onChangeText={onChange}
+          />
         )}
       />
 
@@ -60,7 +65,10 @@ const EditJobScreen = ({ navigation, route }: EditProps) => {
         )}
       />
 
-      <Button title={id ? `Save Changes` : `Add Job`} onPress={handleSubmit(onSubmit)} />
+      <Button
+        title={id ? `Save Changes` : `Add Job`}
+        onPress={handleSubmit(onSubmit)}
+      />
     </View>
   );
 };

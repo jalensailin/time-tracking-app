@@ -6,7 +6,9 @@ interface ClockInButtonProps {
 }
 
 const ClockInButton = ({ clockedIn, onPress }: ClockInButtonProps) => {
-  return <Button title={clockedIn ? "Clock Out" : "Clock In"} onPress={onPress} />;
+  return (
+    <Button title={clockedIn ? "Clock Out" : "Clock In"} onPress={onPress} />
+  );
 };
 
 export default ClockInButton;

@@ -13,9 +13,15 @@ export type RootStackParamList = {
   ClockHistory: { jobId: string };
 };
 
-export type JobMgmtProps = NativeStackScreenProps<RootStackParamList, "Job Management">;
+export type JobMgmtProps = NativeStackScreenProps<
+  RootStackParamList,
+  "Job Management"
+>;
 export type EditProps = NativeStackScreenProps<RootStackParamList, "Edit Job">;
-export type ClockHistoryProps = NativeStackScreenProps<RootStackParamList, "ClockHistory">;
+export type ClockHistoryProps = NativeStackScreenProps<
+  RootStackParamList,
+  "ClockHistory"
+>;
 
 /* -------------------------------------------------------------------------- */
 

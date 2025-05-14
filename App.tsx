@@ -23,9 +23,15 @@ const App = () => {
       <NavigationContainer>
         <GlobalStateProvider>
           <RootStack.Navigator initialRouteName="Job Management">
-            <RootStack.Screen name="Job Management" component={JobManagementScreen} />
+            <RootStack.Screen
+              name="Job Management"
+              component={JobManagementScreen}
+            />
             <RootStack.Screen name="Edit Job" component={EditJobScreen} />
-            <RootStack.Screen name="ClockHistory" component={ClockHistoryScreen} />
+            <RootStack.Screen
+              name="ClockHistory"
+              component={ClockHistoryScreen}
+            />
           </RootStack.Navigator>
         </GlobalStateProvider>
       </NavigationContainer>

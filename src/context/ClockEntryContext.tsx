@@ -16,9 +16,13 @@ interface ClockEntryContextType {
   clockInOut: (jobId: string) => void;
 }
 
-const ClockEntryContext = createContext<ClockEntryContextType | undefined>(undefined);
+const ClockEntryContext = createContext<ClockEntryContextType | undefined>(
+  undefined,
+);
 
-export const ClockEntryProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ClockEntryProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const { state, dispatch } = useAppContext();
 
   // Helper function to get clock entries for a specific job
@@ -26,7 +30,9 @@ export const ClockEntryProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     const job = state.jobs[jobId];
     if (!job) return [];
 
-    return job.clockEntryIds.map((id) => state.clockEntries[id]).filter((entry) => entry !== undefined);
+    return job.clockEntryIds
+      .map((id) => state.clockEntries[id])
+      .filter((entry) => entry !== undefined);
   };
 
   const editClockEntry = (clockEntry: ClockEntry) => {
@@ -58,7 +64,9 @@ export const ClockEntryProvider: React.FC<{ children: React.ReactNode }> = ({ ch
 export const useClockEntryContext = () => {
   const context = useContext(ClockEntryContext);
   if (!context) {
-    throw new Error("useClockEntryContext must be used within a ClockEntryProvider");
+    throw new Error(
+      "useClockEntryContext must be used within a ClockEntryProvider",
+    );
   }
   return context;
 };

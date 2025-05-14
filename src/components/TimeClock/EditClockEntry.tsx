@@ -10,7 +10,12 @@ interface EditClockEntryProps {
   onClose: () => void;
 }
 
-const EditClockEntry = ({ visible, clockIn, onSave, onClose }: EditClockEntryProps) => {
+const EditClockEntry = ({
+  visible,
+  clockIn,
+  onSave,
+  onClose,
+}: EditClockEntryProps) => {
   const [newStart, setNewStart] = useState("");
   const [newEnd, setNewEnd] = useState("");
 
@@ -28,10 +33,22 @@ const EditClockEntry = ({ visible, clockIn, onSave, onClose }: EditClockEntryPro
       <View style={styles.modalContainer}>
         <Text style={styles.modalTitle}>Edit Clock-In</Text>
         <Text>Start Time</Text>
-        <TextInput style={styles.input} value={newStart} onChangeText={setNewStart} />
+        <TextInput
+          style={styles.input}
+          value={newStart}
+          onChangeText={setNewStart}
+        />
         <Text>End Time</Text>
-        <TextInput style={styles.input} value={newEnd} onChangeText={setNewEnd} />
-        <Button color={"blue"} title="Save" onPress={() => onSave(newStart, newEnd || undefined)} />
+        <TextInput
+          style={styles.input}
+          value={newEnd}
+          onChangeText={setNewEnd}
+        />
+        <Button
+          color={"blue"}
+          title="Save"
+          onPress={() => onSave(newStart, newEnd || undefined)}
+        />
         <Button color={"blue"} title="Cancel" onPress={onClose} />
       </View>
     </Modal>

@@ -11,7 +11,10 @@ const JobActions = ({ jobId, deleteJob }: JobActionsProps) => {
 
   return (
     <View style={styles.actionContainer}>
-      <Button title="Edit" onPress={() => navigation.navigate("Edit Job", { id: jobId })} />
+      <Button
+        title="Edit"
+        onPress={() => navigation.navigate("Edit Job", { id: jobId })}
+      />
       <Button title="Delete" onPress={() => deleteJob(jobId)} />
     </View>
   );

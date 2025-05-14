@@ -1,6 +1,13 @@
-import { createContext, useContext, useMemo } from "react";
-import { ClockEntry, Job } from "../types";
-import { useAppContext } from "./AppContext";
+import { createContext, useContext } from "react";
+
+import { ClockEntry } from "../types";
+import {
+  clockInOut as clockInOutAction,
+  deleteClockEntry as deleteClockEntryAction,
+  editClockEntry as editClockEntryAction,
+} from "../state/actions/clockEntryActions";
+
+import { useAppContext } from "../context/AppContext";
 
 interface ClockEntryContextType {
   getClockEntriesForJob: (jobId: string) => ClockEntry[];
@@ -23,15 +30,15 @@ export const ClockEntryProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   };
 
   const editClockEntry = (clockEntry: ClockEntry) => {
-    dispatch({ type: "EDIT_CLOCK_ENTRY", payload: clockEntry });
+    dispatch(editClockEntryAction(clockEntry));
   };
 
   const deleteClockEntry = (clockEntryId: string) => {
-    dispatch({ type: "DELETE_CLOCK_ENTRY", payload: clockEntryId });
+    dispatch(deleteClockEntryAction(clockEntryId));
   };
 
   const clockInOut = (jobId: string) => {
-    dispatch({ type: "CLOCK_IN_OUT", payload: { jobId } });
+    dispatch(clockInOutAction(jobId));
   };
 
   return (

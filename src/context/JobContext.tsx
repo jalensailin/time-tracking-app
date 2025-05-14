@@ -1,5 +1,12 @@
 import { createContext, useContext, useMemo } from "react";
+
 import { Job } from "../types";
+import {
+  addJob as addJobAction,
+  deleteJob as deleteJobAction,
+  editJob as editJobAction,
+} from "../state/actions/jobActions";
+
 import { useAppContext } from "./AppContext";
 
 interface JobContextType {
@@ -15,18 +22,18 @@ export const JobProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const { state, dispatch } = useAppContext();
 
   // Convert the jobs object to an array for easier consumption by components
-  const jobs = useMemo<Job[]>(() => Object.values(state.jobs), [state.jobs]);
+  const jobs = useMemo(() => Object.values(state.jobs), [state.jobs]);
 
   const addJob = (jobData: Omit<Job, "id" | "clockEntryIds" | "clockedIn">) => {
-    dispatch({ type: "ADD_JOB", payload: jobData });
+    dispatch(addJobAction(jobData));
   };
 
   const editJob = (updatedJob: Job) => {
-    dispatch({ type: "EDIT_JOB", payload: updatedJob });
+    dispatch(editJobAction(updatedJob));
   };
 
   const deleteJob = (id: string) => {
-    dispatch({ type: "DELETE_JOB", payload: id });
+    dispatch(deleteJobAction(id));
   };
 
   return <JobContext.Provider value={{ jobs, addJob, editJob, deleteJob }}>{children}</JobContext.Provider>;

@@ -4,7 +4,7 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 import { useClockEntryContext } from "../context/ClockEntryContext";
 import { useJobContext } from "../context/JobContext";
 
-import { useClockHistory } from "../hooks/useClockHistory";
+import { useClockHistoryModal } from "../hooks/useClockHistoryModal";
 
 import ClockEntry from "../components/TimeClock/ClockEntry";
 import EditClockEntry from "../components/TimeClock/EditClockEntry";
@@ -15,13 +15,12 @@ const ClockInHistoryScreen = () => {
 
   const { jobId } = route.params as { jobId: string };
   const { jobs } = useJobContext();
-  const { getClockEntriesForJob } = useClockEntryContext();
+  const { getClockEntriesForJob, editClockEntry, deleteClockEntry } = useClockEntryContext();
 
   const job = jobs.find((job) => job.id === jobId);
   const clockEntries = getClockEntriesForJob(jobId);
 
-  const { selectedEntry, modalVisible, openEditModal, closeModal } = useClockHistory();
-  const { editClockEntry, deleteClockEntry } = useClockEntryContext();
+  const { selectedEntry, modalVisible, openEditModal, closeModal } = useClockHistoryModal();
   if (!job) {
     return (
       <View style={styles.container}>

@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { ClockEntry } from "../types";
 
-export const useClockHistory = () => {
+export const useClockHistoryModal = () => {
   const [selectedEntry, setSelectedEntry] = useState<ClockEntry | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
 
